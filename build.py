@@ -589,6 +589,16 @@ def apply_post_build_patches(frida_dir: Path, custom_name: str):
     log(f"  frida_agent_main -> {custom_name}_agent_main ({count})", "OK")
 
 
+def reset_agent_main_for_first_pass(frida_dir: Path, custom_name: str) -> None:
+    """多架构时：上一轮 post-build 已改写源码 agent-glue，下一架构首次编译
+    Vala 仍会生成 frida_agent_main，必须先把调用点改回，否则 undefined symbol。
+    """
+    renamed = f"{custom_name}_agent_main"
+    count = replace_in_tree(frida_dir, renamed, "frida_agent_main", include_build=False)
+    if count:
+        log(f"  reset {renamed} -> frida_agent_main ({count}) before first-pass", "INFO")
+
+
 # ============================================================================
 # PHASE 4: Binary-level patches (after second compilation)
 # ============================================================================
@@ -954,6 +964,9 @@ Detection vectors covered:
         log("=" * 60, "HEADER")
         log(f"Building for {arch}", "STEP")
         log("=" * 60, "HEADER")
+
+        # 每一架构都走「先 frida_agent_main → 再改名」两遍流程
+        reset_agent_main_for_first_pass(frida_dir, custom_name)
 
         # Configure
         configure_arch(frida_dir, arch, ndk_path)
