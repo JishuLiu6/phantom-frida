@@ -10,21 +10,24 @@ on:
       custom_name:
         description: 'Custom name (replaces "frida" everywhere)'
         required: true
-        default: 'ajeossida'
+        default: 'lzwda'
       arch:
         description: 'Target architecture(s)'
         required: true
-        default: 'android-arm64'
+        # 默认含 x86_64，方便雷电等模拟器；真机用 arm64
+        default: 'android-arm64,android-arm,android-x86_64,android-x86'
         type: choice
         options:
           - android-arm64
           - android-arm
+          - android-x86_64
           - android-arm64,android-arm
+          - android-arm64,android-x86_64
           - android-arm64,android-arm,android-x86_64,android-x86
       port:
-        description: 'Custom port (empty = keep 27042)'
+        description: 'Custom port (empty = keep 27042; 运行时仍可用 -l 指定)'
         required: false
-        default: ''
+        default: '30331'
       extended:
         description: 'Extended anti-detection (D-Bus, symbols, binary sweep)'
         required: false

@@ -10,8 +10,8 @@
 #
 # Configuration via environment variables:
 #   FRIDA_VERSION=17.7.2  (required)
-#   CUSTOM_NAME=stealth   (default: ajeossida)
-#   CUSTOM_PORT=27142     (default: 27042)
+#   CUSTOM_NAME=stealth   (default: lzwda)
+#   CUSTOM_PORT=30331     (default: 30331)
 #   BUILD_ARCH=android-arm64  (default: android-arm64)
 #   EXTENDED=1            (default: 0)
 #   TEMP_FIXES=1          (default: 0)
@@ -20,9 +20,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 FRIDA_VERSION="${FRIDA_VERSION:-17.7.2}"
-CUSTOM_NAME="${CUSTOM_NAME:-ajeossida}"
-CUSTOM_PORT="${CUSTOM_PORT:-}"
-BUILD_ARCH="${BUILD_ARCH:-android-arm64}"
+CUSTOM_NAME="${CUSTOM_NAME:-lzwda}"
+CUSTOM_PORT="${CUSTOM_PORT:-30331}"
+BUILD_ARCH="${BUILD_ARCH:-android-arm64,android-x86_64}"
 EXTENDED="${EXTENDED:-0}"
 TEMP_FIXES="${TEMP_FIXES:-0}"
 
@@ -30,7 +30,7 @@ echo "=== Custom Frida Builder (WSL) ==="
 echo "  Version: $FRIDA_VERSION"
 echo "  Name:    $CUSTOM_NAME"
 echo "  Arch:    $BUILD_ARCH"
-echo "  Port:    ${CUSTOM_PORT:-27042 (default)}"
+echo "  Port:    ${CUSTOM_PORT:-30331}"
 echo ""
 
 # Check dependencies
