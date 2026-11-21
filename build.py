@@ -683,6 +683,13 @@ def apply_binary_patches(binary_path: Path, custom_name: str, extended: bool = F
 
 def configure_arch(frida_dir: Path, arch: str, ndk_path: Path):
     log(f"Configuring for {arch}...", "STEP")
+    # Frida 多架构必须先 wipe meson build 目录，否则报:
+    # "Already configured. Wipe ./build to reconfigure."
+    # 只删 frida/build，保留 frida/deps 工具链缓存。
+    meson_build = frida_dir / "build"
+    if meson_build.exists():
+        log(f"Wiping {meson_build} before reconfigure...", "INFO")
+        shutil.rmtree(meson_build)
     run(
         f"./configure --host={arch}",
         cwd=str(frida_dir),
